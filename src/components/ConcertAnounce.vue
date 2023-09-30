@@ -65,7 +65,6 @@ export default {
       return this.posts.filter(concert => new Date(post.post_data) < currentDate);
     },
   },
-
   };
 
 

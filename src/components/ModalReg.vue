@@ -57,24 +57,42 @@ export default {
             const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             this.isValidEmail = emailPattern.test(this.email);
             },
-            async register() {
+  async register() {
             this.validateEmail();
-      // Проверка, что все поля заполнены
+        // Проверка, что все поля заполнены
         if (!this.isValidEmail) {alert('Введите корректный email')}
         else if (!this.username || !this.email || !this.password) {
         alert('Пожалуйста, заполните все поля');
         }
         else {
-        // Сохранение данных в localStorage
-        localStorage.setItem('username', this.username);
-        localStorage.setItem('email', this.email);
-        localStorage.setItem('password', this.password);
         this.closeModal();
-        this.$router.push({path: '/', query: {authenticated: true}});
-        }
+        
         //запрос на сервер
-        //axios.post('/api/register', { login: this.username, password: this.password })
+        var login = this.username;
+        var email = this.email;
+        var password = this.password;
+        var role = 0;
+
+        var requestData = { login, email, password, role };
+
+      fetch("http://localhost:7137/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
         },
+        body: JSON.stringify(requestData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          // Обработка ответа от сервера здесь
+        })
+        .catch(error => {
+          console.error("Ошибка при отправке запроса:", error);
+        });
+        //this.$router.push({path: '/', query: {authenticated: true}});
+        }
+  },
         },
         props: {
             isModalRegVisible: Boolean,

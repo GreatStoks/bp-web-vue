@@ -80,7 +80,7 @@
             <ul class="dropdown-menu dropdown-menu-dark">
               <router-link class="nav-link"
               :to="{ name: 'merch', params: { type: 'footba' } }">
-                <li><a class="dropdown-item" href="#">ФУТБЫ</a></li>
+                <li class="nav-item"><a class="dropdown-item">ФУТБЫ</a></li>
               </router-link>
               <router-link class="nav-link"
               :to="{ name: 'merch', params: { type: 'krujka' } }">
@@ -153,7 +153,6 @@ export default {
       // Проверяем состояние аутентификации
       return this.$store.getters.isAuthenticated;
     },
-
   },
 };
 

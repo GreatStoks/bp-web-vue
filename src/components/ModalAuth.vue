@@ -45,10 +45,11 @@ import axios from 'axios';
                 this.$emit('closeModal');
             },
 
-        submitForm(event) {
+        async submitForm(event) {
 
         // Проверка логина и пароля, например, на стороне сервера
         if (this.username === 'root' && this.password === 'root')
+
         {
         localStorage.setItem('username', this.username);
         localStorage.setItem('password', this.password);
@@ -60,28 +61,40 @@ import axios from 'axios';
         this.$router.push({path: '/', query: {authenticated: true}});
         }
 
-        else if (this.authenticate(this.username, this.password))  {
+        else  {
         // Если логин и пароль верны, сохраните их в localStorage
-        localStorage.setItem('username', this.username);
-        localStorage.setItem('password', this.password);
-        localStorage.setItem('role', false);
+        var id = null;
+        var login = this.username;
+        var password = this.password;
+
+        var requestData = { id, login, password};
+
+      fetch("http://localhost:7137/api/auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          // Обработка ответа от сервера здесь
+        })
+        .catch(error => {
+          console.error("Ошибка при отправке запроса:", error);
+        });
+
+
+
         this.$store.commit('setAuthenticated', true);
         this.$store.commit('setRole', false);
         // Затем перенаправьте пользователя на страницу Dashboard
-        this.closeModal();
-        this.$router.push({path: '/', query: {authenticated: true}});
+        //this.closeModal();
+        //this.$router.push({path: '/', query: {authenticated: true}});
 
-      } else {
-        alert('Неверный логин или пароль');
       }
         },
-        authenticate(username, password) {
-      // Здесь вы проверяете, совпадают ли введенные данные с зарегистрированными
-      // в локальном хранилище (или на сервере в реальном приложении)
-      const storedUsername = localStorage.getItem('username');
-      const storedPassword = localStorage.getItem('password');
-      return username === storedUsername && password === storedPassword;
-    },
         },
         mounted() {
     const valueFromLocalStorageUsername = localStorage.getItem('username'); 
