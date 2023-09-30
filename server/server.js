@@ -58,8 +58,6 @@ app.post('/api/auth', (req, res) => {
   var salt = bcrypt.genSaltSync(10);
   var passwordHash = bcrypt.hashSync(password, salt)
 
-
-  // Вставляем данные в таблицу пользователей (замените 'users' на имя вашей таблицы)
   const sql = 'SELECT id, login, password FROM users WHERE login = ?';
 
 
