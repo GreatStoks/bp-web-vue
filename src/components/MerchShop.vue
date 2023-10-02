@@ -2,7 +2,7 @@
 <template>
     <nav-pan/>
     <div class="bd1">
-    <h1>МЕРЧ БАССА ОСТИНАТО</h1>
+    <h1>МЕРЧ ГРУППЫ</h1>
               <div class="container_types">
               <router-link class="nav-link"
               :to="{ name: 'merch', params: { type: 'footba' } }">

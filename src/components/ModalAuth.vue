@@ -31,12 +31,14 @@
 <script>
 /* eslint-disable */
 import axios from 'axios';
+import VueCookies from 'vue-cookies'
 
     export default {
         data() {
             return {
                 username: '',
                 password: '',
+                cookieValue: null,
             }
         },
         name: "ModalAuth",
@@ -47,27 +49,30 @@ import axios from 'axios';
 
         async submitForm(event) {
 
+
+       // this.$cookies.set("myCookie", this.username);
+      // Здесь мы устанавливаем куки с именем "myCookie" и значением "Значение вашего куки"
+        //this.cookieValue = this.username;
+
         // Проверка логина и пароля, например, на стороне сервера
         if (this.username === 'root' && this.password === 'root')
 
         {
-        localStorage.setItem('username', this.username);
-        localStorage.setItem('password', this.password);
-        localStorage.setItem('role', true);
+        this.$cookies.set('myCookie', this.username);
         this.$store.commit('setAuthenticated', true);
-        this.$store.commit('setRole', true);
+        //this.$store.commit('setRole', true);
         // Затем перенаправьте пользователя на страницу Dashboard
         this.closeModal();
-        this.$router.push({path: '/', query: {authenticated: true}});
+        this.$router.push({path: '/'});
         }
 
         else  {
-        // Если логин и пароль верны, сохраните их в localStorage
-        var id = null;
+        
         var login = this.username;
         var password = this.password;
 
-        var requestData = { id, login, password};
+        var requestData = { login, password};
+
 
       fetch("http://localhost:7137/api/auth", {
         method: "POST",
@@ -79,6 +84,10 @@ import axios from 'axios';
         .then(response => response.json())
         .then(data => {
           console.log(data);
+          localStorage.setItem('authToken', this.username);
+          this.$store.commit('setAuthenticated', true);
+          this.$store.commit('setRole', false);
+
           // Обработка ответа от сервера здесь
         })
         .catch(error => {
@@ -87,8 +96,7 @@ import axios from 'axios';
 
 
 
-        this.$store.commit('setAuthenticated', true);
-        this.$store.commit('setRole', false);
+
         // Затем перенаправьте пользователя на страницу Dashboard
         //this.closeModal();
         //this.$router.push({path: '/', query: {authenticated: true}});
@@ -96,18 +104,6 @@ import axios from 'axios';
       }
         },
         },
-        mounted() {
-    const valueFromLocalStorageUsername = localStorage.getItem('username'); 
-    const valueFromLocalStoragePassword = localStorage.getItem('password');
-    if (valueFromLocalStorageUsername !== null) {
-      this.$store.commit('setAuthenticated', true);
-    }
-    if (valueFromLocalStorageUsername === 'root' && valueFromLocalStoragePassword === 'root')
-    {
-
-        this.$store.commit('setRole', true);
-    }
-  },
 
         props: {
             isModalVisible: Boolean,

@@ -5,11 +5,11 @@
           <!-- Список анонсов ближайших концертов -->
  <!--        <li v-for="post in upcomingConcerts" :key="post.id" class="conc_container"> -->
             <div class="concert-preview">
-                <img alt="lglglg" :src="post.preview_url" height="100" width="100">
+                <img alt="lglglg" :src="post.imgurl" height="100" width="100">
             </div>
-            <div class="concert-date">{{ post.post_data }}</div>
-            <div class="concert-location"><b>{{ post.post_title }}</b></div>
-            <div class="concert-details">{{ post.post_body }}</div>
+            <div class="concert-date">{{ post.date }}</div>
+            <div class="concert-location"><b>{{ post.place }}</b></div>
+            <div class="concert-details">{{ post.info }}</div>
  <!--         </li>    -->
         </ul>
     </div>
@@ -17,6 +17,7 @@
     <!-- eslint-disable linebreak-style -->
 <script>
 /* eslint-disable */
+
 export default {
     props: {
         post: {

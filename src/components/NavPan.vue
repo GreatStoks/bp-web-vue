@@ -3,12 +3,13 @@
 <div class="NavPan">
     <nav class="navbar navbar-dark bg-dark fixed-top">
   <div class="container-fluid">
-    <router-link to="/" class="rl">
-    <a class="navbar-brand" href="#">Бáссо<br>Остинáто</a>
-    </router-link>
-    <div class="basspunklogo" >
-        <img src="@/assets/logo.svg" alt="bass" height="80" width="80">
+
+    <!--<router-link to="/" class="rl">
+      <div class="basspunklogo" >
+        <img class ="rndlogo" src="@/assets/basso_logo.png" alt="bass" height="120" width="120">
     </div>
+    </router-link>-->
+
     <div class="auth">
 
       <!-- AUTH / REG -->
@@ -113,7 +114,7 @@
 </template>
 
 <script>
-
+/* eslint-disable */
 import ModalAuth from './ModalAuth.vue';
 import ModalReg from './ModalReg.vue';
 
@@ -125,6 +126,7 @@ export default {
     return {
       isModalVisible: false,
       isModalRegVisible: false,
+      authToken: false,
     };
   },
   name: 'NavPan',
@@ -142,18 +144,40 @@ export default {
       this.isModalRegVisible = false;
     },
     logOut() {
-      localStorage.removeItem('username');
-      localStorage.removeItem('password');
+
+
+      //alert('au');
+      this.$cookies.set("myCookie", null);
+      //alert(this.$cookies.get('myCookie'));
+      // Здесь мы устанавливаем куки с именем "myCookie" и значением "Значение вашего куки"
+        this.cookieValue = null;
+      this.$store.commit('setCookie', '');
+      this.$store.commit('setAuthenticated', false);
+      //localStorage.setItem('role', false);
       this.$store.commit('setRole', false);
+
       window.location.reload();
     },
   },
+  
+        created() {
+          
+
+         // alert(this.$cookies.get("myCookie"));
+         // Здесь мы проверяем, есть ли куки с именем "myCookie"
+        if (this.$cookies.get('myCookie') != 'null') {
+        //this.$store.commit('setCookie', myCookie);
+       // alert(this.$cookies.get(newCookies));
+        this.$store.commit('setAuthenticated', true);
+      }
+        },
   computed: {
     isAuthenticated() {
       // Проверяем состояние аутентификации
       return this.$store.getters.isAuthenticated;
     },
   },
+
 };
 
 </script>
@@ -227,7 +251,18 @@ a {
   font-size: smaller;
 }
 
-@media screen and (max-width: 700px) {
+.basspunklogo {
+  position: absolute;
+  top: -21px;
+  left: 21px;
+}
+
+.rndlogo {
+  border-radius: 50%;
+
+}
+
+@media screen and (max-width: 500px) {
   .page {
   position: absolute;
   top:100px;

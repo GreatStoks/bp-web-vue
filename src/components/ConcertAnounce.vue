@@ -13,6 +13,7 @@
 /* eslint-disable */
 import PostForm from '@/components/PostForm.vue';
 import PostList from '@/components/PostList.vue';
+import jsCookie from 'js-cookie';
 
 export default {
     components: {
@@ -20,41 +21,52 @@ export default {
   },
     data() {
     return {
-      posts: [
-        {
-          id: 1,
-          preview_url: 'https://img.gazeta.ru/files3/188/17124188/shutterstock_59594140-pic_32ratio_1200x800-1200x800-93562.jpg',
-          post_data: '2023-09-11',
-          post_title: 'Местоположение концерта 1',
-          post_bod: 'Дополнительная информация о концерте 1',
-          preview: '/nightclub.jpg',
-        },
-        {
-          id: 2,
-          preview_url: 'https://img.gazeta.ru/files3/188/17124188/shutterstock_59594140-pic_32ratio_1200x800-1200x800-93562.jpg',
-          post_data: '2023-09-05',
-          post_title: 'Местоположение концерта 2',
-          post_bod: 'Дополнительная информация о концерте 2',
-          preview: '/street.jpg',
-        },
-        {
-          id: 3,
-          preview_url: 'https://img.gazeta.ru/files3/188/17124188/shutterstock_59594140-pic_32ratio_1200x800-1200x800-93562.jpg',
-          post_data: '2023-09-11',
-          post_title: 'Местоположение концерта 3',
-          post_bod: 'Дополнительная информация о концерте 3',
-          preview: '/street.jpg',
-        },
-        // Добавьте информацию о других ближайших концертах
-      ],
+      posts: [],
     };
+  },
+  mounted() {
+    this.getPost();
   },
   methods: {
     createPost(post) {
         this.posts.push(post);
-    }
+    },
+
+
+    getPost() {
+      var id = '';
+      var imgurl = 'rr';
+      var date = 'rr';
+      var place = 'rr';
+      var info = 'rr';
+
+      var requestData = { id, imgurl, date, place, info};
+      fetch("http://localhost:7137/api/getPost", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+      })
+        .then(response => response.json())
+        .then(data => {
+      if (Array.isArray(data)) { // Проверка на массив
+        
+        data.forEach(post => {
+          this.posts.push(post);
+        });
+      } else {
+        console.error("Сервер вернул неправильный формат данных.");
+      }
+        })
+        .catch(error => {
+          console.error("Ошибка при отправке запроса:", error);
+        });
+      }
+
   },
     name: 'ConcertAnounce',
+    
     computed: {
     upcomingConcerts() {
       const currentDate = new Date();
@@ -65,6 +77,7 @@ export default {
       return this.posts.filter(concert => new Date(post.post_data) < currentDate);
     },
   },
+
   };
 
 

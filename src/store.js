@@ -5,6 +5,7 @@ export default createStore({
   state: {
     authenticated: false,
     role: false,
+    cookie: null,
   },
   mutations: {
     setAuthenticated(state, isAuthenticated) {
@@ -14,7 +15,9 @@ export default createStore({
     setRole(state, role) {
         state.role = role;
     },
-
+    setCookie(state, newCookies) {
+      state.cookie = newCookies;
+    }
   },
 
   getters: {
@@ -25,5 +28,8 @@ export default createStore({
     role(state) {
         return state.role;
       },
+      newCookies(state) {
+        return state.cookie;
+      }
   },
 });

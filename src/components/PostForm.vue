@@ -52,8 +52,35 @@ export default {
     }
     else
     {
-    this.post.id = Date.now();
+    //this.post.id = Date.now();
     this.$emit('create', this.post)
+
+    var imgurl = this.post.preview_url;
+    var date = this.post.post_data;
+    var place = this.post.post_title;
+    var info = this.post.post_body;
+
+    var requestData = { imgurl, date, place, info};
+    fetch("http://localhost:7137/api/createPost", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          // Обработка ответа от сервера здесь
+        })
+        .catch(error => {
+          console.error("Ошибка при отправке запроса:", error);
+        });
+
+
+
+
+
 
     this.post = {
       preview_url: '',
@@ -83,11 +110,11 @@ export default {
   },
   computed: {
     isAdmin() {
-      return this.$store.getters.role;
-        
+      if (this.$cookies.get('myCookie') === 'root') return 1;
     },
     isAuthenticated() {
       // Проверяем состояние аутентификации
+      alert('auth', + this.$store.getters.isAuthenticated);
       return this.$store.getters.isAuthenticated;
     },
   }

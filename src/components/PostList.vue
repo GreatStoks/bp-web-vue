@@ -10,7 +10,6 @@
     :post="post"
     />
       </section>
-      <!-- тут такое же все но будет отбор через v-if по дате-->
       <section class="concerts_past">
         <h2>Прошедшие события</h2>
         <post-item
@@ -41,11 +40,11 @@ export default {
     computed: {
     upcomingConcerts() {
       const currentDate = new Date();
-      return this.posts.filter(post => new Date(post.post_data) >= currentDate);
+      return this.posts.filter(post => new Date(post.date) >= currentDate);
     },
     pastedConcerts() {
       const currentDate = new Date();
-      return this.posts.filter(post => new Date(post.post_data) < currentDate);
+      return this.posts.filter(post => new Date(post.date) < currentDate);
     },
   },
 }
