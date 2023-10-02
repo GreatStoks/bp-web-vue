@@ -5,14 +5,14 @@ import store from './store';
 /* eslint-disable */
 import VueCookies from 'vue-cookies';
 
-const isAuthenticated = $cookies.get('myCookie') === 'true';
-const isAdmin = localStorage.getItem('role') === 'admin';
+//const isAuthenticated = $cookies.get('myCookie') === 'true';
+//const isAdmin = localStorage.getItem('role') === 'admin';
 // Устанавливаем состояние аутентификации в хранилище
 //store.commit('setAuthenticated', isAuthenticated);
 
 
-const adus = 'root';
-const adpa = 'root'; 
+//const adus = 'root';
+//const adpa = 'root'; 
 
 
 createApp(App)

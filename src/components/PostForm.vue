@@ -111,11 +111,10 @@ export default {
   computed: {
     isAdmin() {
       console.log(this.$adpa);
-      if (this.$store.getters.getAdUs === 'root') return 1;
+      if (this.$store.getters.getAdUs === $cookies.get('myCookie')) return 1;
     },
     isAuthenticated() {
-      // Проверяем состояние аутентификации
-      alert('auth', + this.$store.getters.isAuthenticated);
+
       return this.$store.getters.isAuthenticated;
     },
   }

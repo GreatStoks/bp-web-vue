@@ -135,9 +135,6 @@ label {
 
 @media screen and (max-width: 700px) {
 
-      .basspunklogo {
-        margin-left:0;
-      }
       .bd1 {
   margin-top:13rem;
 }

@@ -4,11 +4,11 @@
     <nav class="navbar navbar-dark bg-dark fixed-top">
   <div class="container-fluid">
 
-    <!--<router-link to="/" class="rl">
+    <router-link to="/" class="rl">
       <div class="basspunklogo" >
         <img class ="rndlogo" src="@/assets/basso_logo.png" alt="bass" height="120" width="120">
     </div>
-    </router-link>-->
+    </router-link>
 
     <div class="auth">
 
@@ -145,46 +145,29 @@ export default {
     },
     logOut() {
 
-
-      //alert('au');
       this.$cookies.set("myCookie", null);
-      //alert(this.$cookies.get('myCookie'));
-      // Здесь мы устанавливаем куки с именем "myCookie" и значением "Значение вашего куки"
-        this.cookieValue = null;
-      this.$store.commit('setCookie', '');
       this.$store.commit('setAuthenticated', false);
-      //localStorage.setItem('role', false);
       this.$store.commit('setRole', false);
-      this.$store.commit('setAdUs', '');
 
       window.location.reload();
     },
-    isAdmin() {
-    if ($cookies.get('myCookie') === 'root'){
-    alert(this.$store.getters.getAdUs === 'root');
-    this.$store.commit('setRole', true);
-}}
   },
   
         created() {
-          
-
-         // alert(this.$cookies.get("myCookie"));
-         // Здесь мы проверяем, есть ли куки с именем "myCookie"
         if (this.$cookies.get('myCookie') != 'null') {
-        //this.$store.commit('setCookie', myCookie);
-       // alert(this.$cookies.get(newCookies));
         this.$store.commit('setAuthenticated', true);
       }
         },
   computed: {
     isAuthenticated() {
-      this.isAdmin();
       // Проверяем состояние аутентификации
       return this.$store.getters.isAuthenticated;
 
     },
-
+    isAdmin() {
+    if ($cookies.get('myCookie') === this.$store.getters.getAdUs){
+    return $cookies.get('myCookie') === this.$store.getters.getAdUs;
+}}
   },
 
 };
@@ -263,7 +246,7 @@ a {
 .basspunklogo {
   position: absolute;
   top: -21px;
-  left: 21px;
+  left: 50px;
 }
 
 .rndlogo {
