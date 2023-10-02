@@ -55,9 +55,9 @@ import VueCookies from 'vue-cookies'
         //this.cookieValue = this.username;
 
         // Проверка логина и пароля, например, на стороне сервера
-        if (this.username === 'root' && this.password === 'root')
-
+        if (this.username === this.$store.getters.getAdUs && this.password === this.$store.getters.getAdPa)
         {
+          alert('da');
         this.$cookies.set('myCookie', this.username);
         this.$store.commit('setAuthenticated', true);
         //this.$store.commit('setRole', true);
@@ -84,10 +84,14 @@ import VueCookies from 'vue-cookies'
         .then(response => response.json())
         .then(data => {
           console.log(data);
-          localStorage.setItem('authToken', this.username);
+          //localStorage.setItem('authToken', this.username);
           this.$store.commit('setAuthenticated', true);
           this.$store.commit('setRole', false);
-
+          this.$cookies.set('myCookie', this.username);
+        //this.$store.commit('setRole', true);
+        // Затем перенаправьте пользователя на страницу Dashboard
+        this.closeModal();
+        this.$router.push({path: '/'});
           // Обработка ответа от сервера здесь
         })
         .catch(error => {

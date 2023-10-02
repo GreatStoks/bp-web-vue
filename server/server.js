@@ -33,12 +33,15 @@ db.connect((err) => {
 app.post('/api/register', async(req, res) => {
   var { id, login, email, password, role } = req.body;
 
-  //var salt = bcrypt.genSaltSync(10);
-  var salt = '$Vers$log2(5)$1]';
+      // Генерируем соль с указанием количества раундов
+      const saltRounds = 12;
+      const salt = await bcrypt.genSalt(saltRounds);
+  
+      // Хешируем пароль с использованием сгенерированной соли
+      const passwordHash = await bcrypt.hash(password, salt);
 
-  var passwordHash = await bcrypt.hash(password, salt);
   console.log(passwordHash);
-  // Вставляем данные в таблицу пользователей (замените 'users' на имя вашей таблицы)
+
   var sql = 'INSERT INTO users (id, login, email, password, role) VALUES (?, ?, ?, ?, ?)';
   db.query(sql, [id, login, email, passwordHash, role], (err, results) => {
     if (err) {
@@ -53,42 +56,41 @@ app.post('/api/register', async(req, res) => {
 
 // Роут для авторизации
 app.post('/api/auth',async(req, res) => {
-  var { login, password} = req.body;
-  var id;
-  //var salt = bcrypt.genSaltSync(10);
-  var salt = '$Vers$log2(5)$1]';
+  const { login, password } = req.body;
 
-  var passwordHash = await bcrypt.hash(password, salt);
-  console.log(bcrypt.compare(password, passwordHash));
-  var sql = 'SELECT id, login, password FROM users WHERE login = ?';
-
-
-  db.query(sql, [id, login, password], (err, results) => {
+  // Выполняем SQL-запрос для получения хеша пароля из базы данных
+  const sql = 'SELECT password FROM users WHERE login = ?';
+  db.query(sql, [login], (err, results) => {
     if (err) {
       console.error('Ошибка при выполнении запроса: ' + err.message);
       res.status(500).json({ error: 'Ошибка при выполнении запроса' });
-    } else if (results.length === 0)
-    {
-      res.status(401).json({ error: 'Неверный логин или пароль' });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(401).json({ error: 'Пользователь не найден' });
+      return;
     }
     else
     {
+    const passwordHashFromDB = results[0].password;
 
-  bcrypt.compare(password, passwordHash, (bcryptErr, bcryptResult) => {
+    bcrypt.compare(password, passwordHashFromDB, (bcryptErr, bcryptResult) => {
       if (bcryptErr) {
         console.error('Ошибка при сравнении паролей: ' + bcryptErr.message);
         res.status(500).json({ error: 'Ошибка при сравнении паролей' });
       } else {
         if (bcryptResult) {
           // Пароли совпали, аутентификация успешна
-          res.status(200).json({ message: 'Успешная аутентификация' });
+          res.status(200).json({ message: 'Аутентификация успешна' });
         } else {
           // Пароли не совпали
           res.status(401).json({ error: 'Неверный логин или пароль' });
         }
       }
-  });
-    }
+    
+    });
+  }
   });
 });
 

@@ -6,6 +6,8 @@ export default createStore({
     authenticated: false,
     role: false,
     cookie: null,
+    adus: 'root',
+    adpa: 'root',
   },
   mutations: {
     setAuthenticated(state, isAuthenticated) {
@@ -17,7 +19,13 @@ export default createStore({
     },
     setCookie(state, newCookies) {
       state.cookie = newCookies;
-    }
+    },
+    setAdUs(state, adus) {
+      state.adus = adus;
+    },
+    setAdPa(state, adpa) {
+      state.adpa = adpa;
+    },
   },
 
   getters: {
@@ -30,6 +38,8 @@ export default createStore({
       },
       newCookies(state) {
         return state.cookie;
-      }
+      },
+      getAdUs: (state) => state.adus,
+      getAdPa: (state) => state.adpa,
   },
 });

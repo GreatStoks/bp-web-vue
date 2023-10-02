@@ -155,9 +155,15 @@ export default {
       this.$store.commit('setAuthenticated', false);
       //localStorage.setItem('role', false);
       this.$store.commit('setRole', false);
+      this.$store.commit('setAdUs', '');
 
       window.location.reload();
     },
+    isAdmin() {
+    if ($cookies.get('myCookie') === 'root'){
+    alert(this.$store.getters.getAdUs === 'root');
+    this.$store.commit('setRole', true);
+}}
   },
   
         created() {
@@ -173,9 +179,12 @@ export default {
         },
   computed: {
     isAuthenticated() {
+      this.isAdmin();
       // Проверяем состояние аутентификации
       return this.$store.getters.isAuthenticated;
+
     },
+
   },
 
 };

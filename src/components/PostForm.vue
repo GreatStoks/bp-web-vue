@@ -110,7 +110,8 @@ export default {
   },
   computed: {
     isAdmin() {
-      if (this.$cookies.get('myCookie') === 'root') return 1;
+      console.log(this.$adpa);
+      if (this.$store.getters.getAdUs === 'root') return 1;
     },
     isAuthenticated() {
       // Проверяем состояние аутентификации
