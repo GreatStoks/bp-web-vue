@@ -1,4 +1,4 @@
-# basspunk
+# BASSO OSTINATO DEMO PROJECT
 
 ## Project setup
 ```
@@ -10,15 +10,19 @@ npm install
 npm run serve
 ```
 
+### Express js server
+```
+npm run start
+```
+
 ### Compiles and minifies for production
 ```
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
+### DATABASE REQUIRED
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```
+
+# enough specifications for this time

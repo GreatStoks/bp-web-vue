@@ -34,11 +34,11 @@ export default {
 
 
     getPost() {
-      var id = '';
-      var imgurl = 'rr';
-      var date = 'rr';
-      var place = 'rr';
-      var info = 'rr';
+      var id,
+      imgurl,
+      date,
+      place,
+      info;
 
       var requestData = { id, imgurl, date, place, info};
       fetch("http://localhost:7137/api/getPost", {
